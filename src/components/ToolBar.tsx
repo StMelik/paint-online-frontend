@@ -19,6 +19,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_circle'
+                onClick={() => toolState.setTool(new Circle(canvasState.canvas))}
             />
             <button
                 className='toolbar__button toolbar__button_eraser'
