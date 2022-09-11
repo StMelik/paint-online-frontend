@@ -1,0 +1,64 @@
+@import "./variables.scss";
+
+.toolbar {
+    padding: 0 20px;
+    height: $toolbar-height;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    position: absolute;
+    width: 100%;
+    box-shadow: 0 4px 5px gray;
+    z-index: 2;
+
+    &_settings {
+        top: $toolbar-height;
+        z-index: 1;
+    }
+
+    &__button {
+        width: 25px;
+        height: 25px;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        transition: opacity 0.3s;
+
+        &:hover {
+            opacity: 0.6;
+        }
+
+        &_brush {
+            background-image: url("../assets/icons/brush-icon.svg");
+        }
+        &_rect {
+            background-image: url("../assets/icons/rect-icon.svg");
+        }
+        &_circle {
+            background-image: url("../assets/icons/circle-icon.svg");
+        }
+        &_eraser {
+            background-image: url("../assets/icons/eraser-icon.svg");
+        }
+        &_line {
+            background-image: url("../assets/icons/line-icon.svg");
+        }
+        &_color {
+        }
+        &_back {
+            margin-left: auto;
+            background-image: url("../assets/icons/back-icon.svg");
+        }
+        &_next {
+            background-image: url("../assets/icons/next-icon.svg");
+        }
+        &_save {
+            background-image: url("../assets/icons/save-icon.svg");
+        }
+    }
+}
