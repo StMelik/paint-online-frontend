@@ -3,6 +3,7 @@ import toolState from '../store/toolState';
 import '../styles/toolbar.scss'
 import Brush from '../tools/Brush';
 import Circle from '../tools/Circle';
+import Eraser from '../tools/Eraser';
 import Rect from '../tools/Rect';
 
 const ToolBar = () => {
@@ -23,6 +24,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_eraser'
+                onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}
             />
             <button
                 className='toolbar__button toolbar__button_line'
