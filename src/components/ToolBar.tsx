@@ -4,6 +4,7 @@ import '../styles/toolbar.scss'
 import Brush from '../tools/Brush';
 import Circle from '../tools/Circle';
 import Eraser from '../tools/Eraser';
+import Line from '../tools/Line';
 import Rect from '../tools/Rect';
 
 const ToolBar = () => {
@@ -28,6 +29,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_line'
+                onClick={() => toolState.setTool(new Line(canvasState.canvas))}
             />
             <input
                 className='toolbar__button toolbar__button_color'
