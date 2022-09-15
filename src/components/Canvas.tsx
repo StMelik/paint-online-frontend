@@ -11,6 +11,7 @@ import { SERVER_URL, WS_SERVER } from '../utils/constants';
 import Rect from '../tools/Rect';
 import { IMessage, IMessageDraw, MessageType } from '../types/message';
 import { ToolType } from '../types/tool';
+import Circle from '../tools/Circle';
 
 const Canvas = observer(() => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -94,6 +95,9 @@ const Canvas = observer(() => {
                 break
             case ToolType.Rect:
                 Rect.staticDraw(ctx, tool.x, tool.y, tool.width, tool.height, tool.color)
+                break
+            case ToolType.Circle:
+                Circle.staticDraw(ctx, tool.x, tool.y, tool.radius)
                 break
             case ToolType.Finish:
                 ctx.beginPath()

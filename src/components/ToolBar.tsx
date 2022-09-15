@@ -40,7 +40,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_circle'
-                onClick={() => toolState.setTool(new Circle(canvasState.canvas))}
+                onClick={() => toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
             />
             <button
                 className='toolbar__button toolbar__button_eraser'

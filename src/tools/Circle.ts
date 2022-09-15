@@ -1,13 +1,16 @@
+import { IMessage, MessageType } from "../types/message";
+import { ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Circle extends Tool {
     mouseDown = false
     startX = 0
     startY = 0
+    radius = 0
     saved = ''
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas)
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+        super(canvas, socket, id)
         this.listen()
     }
 
@@ -19,6 +22,16 @@ export default class Circle extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
+        this.socket.send(JSON.stringify({
+            id: this.id,
+            method: MessageType.Draw,
+            tool: {
+                type: ToolType.Circle,
+                x: this.startX,
+                y: this.startY,
+                radius: this.radius
+            }
+        } as IMessage))
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -32,8 +45,8 @@ export default class Circle extends Tool {
         if (this.mouseDown) {
             let radiusX = Math.abs(e.offsetX - this.startX);
             let radiusY = Math.abs(e.offsetY - this.startY);
-            let radius = Math.max(radiusX, radiusY)
-            this.draw(this.startX, this.startY, radius)
+            this.radius = Math.max(radiusX, radiusY)
+            this.draw(this.startX, this.startY, this.radius)
         }
     }
 
@@ -47,5 +60,11 @@ export default class Circle extends Tool {
             this.ctx.arc(x, y, radius, 0, Math.PI * 2)
             this.ctx.stroke()
         }
+    }
+
+    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number) {
+        ctx.beginPath()
+        ctx.arc(x, y, radius, 0, Math.PI * 2)
+        ctx.stroke()
     }
 }
