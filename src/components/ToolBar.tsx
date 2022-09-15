@@ -44,7 +44,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_eraser'
-                onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}
+                onClick={() => toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
             />
             <button
                 className='toolbar__button toolbar__button_line'

@@ -42,12 +42,14 @@ export default class Brush extends Tool {
                     type: ToolType.Brush,
                     x: e.offsetX,
                     y: e.offsetY,
+                    color: this.ctx.strokeStyle
                 }
             } as IMessage))
         }
     }
 
-    static draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    static draw(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+        ctx.strokeStyle = color
         ctx.lineTo(x, y)
         ctx.stroke()
     }

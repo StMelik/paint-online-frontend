@@ -13,6 +13,7 @@ import { IMessage, IMessageDraw, MessageType } from '../types/message';
 import { ToolType } from '../types/tool';
 import Circle from '../tools/Circle';
 import Line from '../tools/Line';
+import Eraser from '../tools/Eraser';
 
 const Canvas = observer(() => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -92,13 +93,16 @@ const Canvas = observer(() => {
         const ctx = canvasRef.current!.getContext('2d')!
         switch (tool?.type) {
             case ToolType.Brush:
-                Brush.draw(ctx, tool.x, tool.y)
+                Brush.draw(ctx, tool.x, tool.y, tool.color)
                 break
             case ToolType.Rect:
                 Rect.staticDraw(ctx, tool.x, tool.y, tool.width, tool.height, tool.color)
                 break
             case ToolType.Circle:
                 Circle.staticDraw(ctx, tool.x, tool.y, tool.radius)
+                break
+            case ToolType.Eraser:
+                Eraser.draw(ctx, tool.x, tool.y, "#ffffff")
                 break
             case ToolType.Line:
                 Line.staticDraw(ctx, tool.startX, tool.startY, tool.endX, tool.endY)
