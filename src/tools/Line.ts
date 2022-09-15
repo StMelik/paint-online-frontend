@@ -11,30 +11,30 @@ export default class Line extends Tool {
         this.listen()
     }
 
-    listen(): void {
+    listen() {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this)
         this.canvas.onmousedown = this.mouseDownHandler.bind(this)
         this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     }
 
-    mouseUpHandler(e: MouseEvent): void {
+    mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
     }
 
-    mouseDownHandler(e: MouseEvent): void {
+    mouseDownHandler(e: MouseEvent) {
         this.mouseDown = true
         this.startX = e.offsetX
         this.startY = e.offsetY
         this.saved = this.canvas.toDataURL()
     }
 
-    mouseMoveHandler(e: MouseEvent): void {
+    mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
             this.draw(e.offsetX, e.offsetY)
         }
     }
 
-    draw(x: number, y: number): void {
+    draw(x: number, y: number) {
         const img = new Image()
         img.src = this.saved
         img.onload = () => {

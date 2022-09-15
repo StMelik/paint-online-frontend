@@ -1,37 +1,36 @@
 import Tool from "./Tool";
 
 export default class Brush extends Tool {
-    mouseDown: boolean;
+    mouseDown = false
 
     constructor(canvas: HTMLCanvasElement) {
         super(canvas)
         this.listen()
-        this.mouseDown = false
     }
 
-    listen(): void {
+    listen() {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this)
         this.canvas.onmousedown = this.mouseDownHandler.bind(this)
         this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     }
 
-    mouseUpHandler(e: MouseEvent): void {
+    mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
     }
 
-    mouseDownHandler(e: MouseEvent): void {
+    mouseDownHandler(e: MouseEvent) {
         this.mouseDown = true
         this.ctx.beginPath()
         this.ctx.moveTo(e.offsetX, e.offsetY)
     }
 
-    mouseMoveHandler(e: MouseEvent): void {
+    mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
             this.draw(e.offsetX, e.offsetY)
         }
     }
 
-    draw(x: number, y: number): void {
+    draw(x: number, y: number) {
         this.ctx.lineTo(x, y)
         this.ctx.stroke()
     }

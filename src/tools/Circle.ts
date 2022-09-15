@@ -1,51 +1,44 @@
 import Tool from "./Tool";
 
 export default class Circle extends Tool {
-    mouseDown: boolean;
-    startX: number
-    startY: number
-    saved: string
+    mouseDown = false
+    startX = 0
+    startY = 0
+    saved = ''
 
     constructor(canvas: HTMLCanvasElement) {
         super(canvas)
         this.listen()
-        this.mouseDown = false
-        this.startX = 0
-        this.startY = 0
-        this.saved = ''
     }
 
-    listen(): void {
+    listen() {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this)
         this.canvas.onmousedown = this.mouseDownHandler.bind(this)
         this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     }
 
-    mouseUpHandler(e: MouseEvent): void {
+    mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
     }
 
-    mouseDownHandler(e: MouseEvent): void {
+    mouseDownHandler(e: MouseEvent) {
         this.mouseDown = true
-        this.ctx.beginPath()
         this.startX = e.offsetX;
         this.startY = e.offsetY;
         this.saved = this.canvas.toDataURL()
     }
 
-    mouseMoveHandler(e: MouseEvent): void {
+    mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
-            let currentX = e.offsetX;
-            let currentY = e.offsetY;
-            let radiusX = Math.abs(currentX - this.startX);
-            let radiusY = Math.abs(currentY - this.startY);
+            let radiusX = Math.abs(e.offsetX - this.startX);
+            let radiusY = Math.abs(e.offsetY - this.startY);
             let radius = Math.max(radiusX, radiusY)
             this.draw(this.startX, this.startY, radius)
         }
     }
 
-    draw(x: number, y: number, radius: number): void {
-        const img: HTMLImageElement = new Image()
+    draw(x: number, y: number, radius: number) {
+        const img = new Image()
         img.src = this.saved
         img.onload = () => {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
