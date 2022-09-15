@@ -1,3 +1,4 @@
+import React from 'react';
 import canvasState from '../store/canvasState';
 import toolState from '../store/toolState';
 import '../styles/toolbar.scss'
@@ -8,6 +9,12 @@ import Line from '../tools/Line';
 import Rect from '../tools/Rect';
 
 const ToolBar = () => {
+    function changeColor(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = e.target.value
+        toolState.setStrokeColor(value)
+        toolState.setFillColor(value)
+    }
+
     return (
         <div className="toolbar">
 
@@ -34,6 +41,7 @@ const ToolBar = () => {
             <input
                 className='toolbar__button toolbar__button_color'
                 type="color"
+                onChange={changeColor}
             />
             <button
                 className='toolbar__button toolbar__button_back'
