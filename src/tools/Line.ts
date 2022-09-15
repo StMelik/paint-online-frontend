@@ -1,3 +1,5 @@
+import { IMessage, MessageType } from "../types/message";
+import { ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Line extends Tool {
@@ -6,8 +8,8 @@ export default class Line extends Tool {
     startX = 0;
     startY = 0;
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas)
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+        super(canvas, socket, id)
         this.listen()
     }
 
@@ -19,6 +21,17 @@ export default class Line extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
+        this.socket.send(JSON.stringify({
+            id: this.id,
+            method: MessageType.Draw,
+            tool: {
+                type: ToolType.Line,
+                startX: this.startX,
+                startY: this.startY,
+                endX: e.offsetX,
+                endY: e.offsetY
+            }
+        } as IMessage))
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -45,5 +58,12 @@ export default class Line extends Tool {
             this.ctx.lineTo(x, y)
             this.ctx.stroke()
         }
+    }
+
+    static staticDraw(ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number) {
+        ctx.beginPath()
+        ctx.moveTo(startX, startY)
+        ctx.lineTo(endX, endY)
+        ctx.stroke()
     }
 }

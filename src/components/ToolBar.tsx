@@ -48,7 +48,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_line'
-                onClick={() => toolState.setTool(new Line(canvasState.canvas))}
+                onClick={() => toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
             />
             <input
                 className='toolbar__button toolbar__button_color'

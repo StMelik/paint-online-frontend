@@ -12,6 +12,7 @@ import Rect from '../tools/Rect';
 import { IMessage, IMessageDraw, MessageType } from '../types/message';
 import { ToolType } from '../types/tool';
 import Circle from '../tools/Circle';
+import Line from '../tools/Line';
 
 const Canvas = observer(() => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -98,6 +99,9 @@ const Canvas = observer(() => {
                 break
             case ToolType.Circle:
                 Circle.staticDraw(ctx, tool.x, tool.y, tool.radius)
+                break
+            case ToolType.Line:
+                Line.staticDraw(ctx, tool.startX, tool.startY, tool.endX, tool.endY)
                 break
             case ToolType.Finish:
                 ctx.beginPath()

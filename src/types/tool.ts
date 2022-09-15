@@ -2,6 +2,7 @@ export enum ToolType {
     Brush = 'brush',
     Rect = 'rect',
     Circle = 'circle',
+    Line = 'line',
     Finish = 'finish',
 }
 
@@ -27,6 +28,14 @@ interface ICircle {
     radius: number,
 }
 
+interface ILine {
+    type: ToolType.Line,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+}
+
 interface IFinish {
     type: ToolType.Finish,
 }
@@ -35,4 +44,5 @@ export type ITool =
     IBrush |
     IRect |
     ICircle |
+    ILine |
     IFinish
