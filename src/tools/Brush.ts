@@ -1,4 +1,5 @@
-import { FiguresType, IMessage, Methods } from "../components/types/canvas";
+import { IMessage, MessageType } from "../types/message";
+import { ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Brush extends Tool {
@@ -19,9 +20,9 @@ export default class Brush extends Tool {
         this.mouseDown = false
         this.socket.send(JSON.stringify({
             id: this.id,
-            method: Methods.Draw,
-            figure: {
-                type: FiguresType.Finish
+            method: MessageType.Draw,
+            tool: {
+                type: ToolType.Finish
             }
         } as IMessage))
     }
@@ -36,9 +37,9 @@ export default class Brush extends Tool {
         if (this.mouseDown) {
             this.socket.send(JSON.stringify({
                 id: this.id,
-                method: Methods.Draw,
-                figure: {
-                    type: FiguresType.Brush,
+                method: MessageType.Draw,
+                tool: {
+                    type: ToolType.Brush,
                     x: e.offsetX,
                     y: e.offsetY,
                 }

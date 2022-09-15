@@ -8,8 +8,9 @@ import toolState from '../store/toolState';
 import Brush from '../tools/Brush';
 import Popup from './Popup';
 import { SERVER_URL, WS_SERVER } from '../utils/constants';
-import { FiguresType, IMessage, IMessageDraw, Methods } from './types/canvas';
 import Rect from '../tools/Rect';
+import { IMessage, IMessageDraw, MessageType } from '../types/message';
+import { ToolType } from '../types/tool';
 
 const Canvas = observer(() => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -49,7 +50,7 @@ const Canvas = observer(() => {
             socket.send(JSON.stringify({
                 id: params.id!,
                 username: canvasState.username,
-                method: Methods.Connection,
+                method: MessageType.Connection,
             } as IMessage))
         }
 
@@ -57,10 +58,10 @@ const Canvas = observer(() => {
             const msg: IMessage = JSON.parse(e.data)
 
             switch (msg.method) {
-                case Methods.Connection:
+                case MessageType.Connection:
                     console.log(`Пользователь ${msg.username} подключился`);
                     break
-                case Methods.Draw:
+                case MessageType.Draw:
                     drawHandler(msg)
                     break
             }
@@ -85,16 +86,16 @@ const Canvas = observer(() => {
     }
 
     function drawHandler(msg: IMessageDraw) {
-        const figure = msg.figure
+        const tool = msg.tool
         const ctx = canvasRef.current!.getContext('2d')!
-        switch (figure?.type) {
-            case FiguresType.Brush:
-                Brush.draw(ctx, figure.x, figure.y)
+        switch (tool?.type) {
+            case ToolType.Brush:
+                Brush.draw(ctx, tool.x, tool.y)
                 break
-            case FiguresType.Rect:
-                Rect.staticDraw(ctx, figure.x, figure.y, figure.width, figure.height, figure.color)
+            case ToolType.Rect:
+                Rect.staticDraw(ctx, tool.x, tool.y, tool.width, tool.height, tool.color)
                 break
-            case FiguresType.Finish:
+            case ToolType.Finish:
                 ctx.beginPath()
                 break
         }

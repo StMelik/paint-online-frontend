@@ -1,4 +1,5 @@
-import { FiguresType, IMessage, Methods } from "../components/types/canvas";
+import { IMessage, MessageType } from "../types/message";
+import { ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Rect extends Tool {
@@ -24,9 +25,9 @@ export default class Rect extends Tool {
         this.mouseDown = false
         this.socket.send(JSON.stringify({
             id: this.id,
-            method: Methods.Draw,
-            figure: {
-                type: FiguresType.Rect,
+            method: MessageType.Draw,
+            tool: {
+                type: ToolType.Rect,
                 x: this.startX,
                 y: this.startY,
                 height: this.height,
