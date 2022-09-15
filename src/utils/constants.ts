@@ -1,0 +1,1 @@
+export const WS_SERVER = "ws://localhost:5000/"
