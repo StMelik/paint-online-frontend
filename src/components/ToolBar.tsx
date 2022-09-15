@@ -45,9 +45,11 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_back'
+                onClick={() => canvasState.undo()}
             />
             <button
                 className='toolbar__button toolbar__button_next'
+                onClick={() => canvasState.redo()}
             />
             <button
                 className='toolbar__button toolbar__button_save'
