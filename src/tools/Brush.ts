@@ -1,10 +1,11 @@
+import { FiguresType, IMessage, Methods } from "../components/types/canvas";
 import Tool from "./Tool";
 
 export default class Brush extends Tool {
     mouseDown = false
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas)
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+        super(canvas, socket, id)
         this.listen()
     }
 
@@ -16,6 +17,13 @@ export default class Brush extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
+        this.socket.send(JSON.stringify({
+            id: this.id,
+            method: Methods.Draw,
+            figure: {
+                type: FiguresType.Finish
+            }
+        } as IMessage))
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -26,12 +34,20 @@ export default class Brush extends Tool {
 
     mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
-            this.draw(e.offsetX, e.offsetY)
+            this.socket.send(JSON.stringify({
+                id: this.id,
+                method: Methods.Draw,
+                figure: {
+                    type: FiguresType.Brush,
+                    x: e.offsetX,
+                    y: e.offsetY,
+                }
+            } as IMessage))
         }
     }
 
-    draw(x: number, y: number) {
-        this.ctx.lineTo(x, y)
-        this.ctx.stroke()
+    static draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+        ctx.lineTo(x, y)
+        ctx.stroke()
     }
 }

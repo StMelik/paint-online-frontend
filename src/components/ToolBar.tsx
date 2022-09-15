@@ -15,16 +15,28 @@ const ToolBar = () => {
         toolState.setFillColor(value)
     }
 
+    function download() {
+        const dataUrl = canvasState.canvas.toDataURL()
+        console.log(dataUrl);
+
+        const a = document.createElement('a')
+        a.href = dataUrl
+        a.download = canvasState.sessionId + ".jpg"
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+    }
+
     return (
         <div className="toolbar">
 
             <button
                 className='toolbar__button toolbar__button_brush'
-                onClick={() => toolState.setTool(new Brush(canvasState.canvas))}
+                onClick={() => toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
             />
             <button
                 className='toolbar__button toolbar__button_rect'
-                onClick={() => toolState.setTool(new Rect(canvasState.canvas))}
+                onClick={() => toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
             />
             <button
                 className='toolbar__button toolbar__button_circle'
@@ -53,6 +65,7 @@ const ToolBar = () => {
             />
             <button
                 className='toolbar__button toolbar__button_save'
+                onClick={download}
             />
         </div>
     );

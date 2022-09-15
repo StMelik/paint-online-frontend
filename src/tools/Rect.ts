@@ -1,3 +1,4 @@
+import { FiguresType, IMessage, Methods } from "../components/types/canvas";
 import Tool from "./Tool";
 
 export default class Rect extends Tool {
@@ -5,9 +6,11 @@ export default class Rect extends Tool {
     startX = 0
     startY = 0
     saved = ''
+    width = 0
+    height = 0
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas)
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+        super(canvas, socket, id)
         this.listen()
     }
 
@@ -19,6 +22,18 @@ export default class Rect extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
+        this.socket.send(JSON.stringify({
+            id: this.id,
+            method: Methods.Draw,
+            figure: {
+                type: FiguresType.Rect,
+                x: this.startX,
+                y: this.startY,
+                height: this.height,
+                width: this.width,
+                color: this.ctx.fillStyle
+            }
+        } as IMessage))
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -30,9 +45,9 @@ export default class Rect extends Tool {
 
     mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
-            let width = e.offsetX - this.startX;
-            let heigth = e.offsetY - this.startY;
-            this.draw(this.startX, this.startY, width, heigth
+            this.width = e.offsetX - this.startX;
+            this.height = e.offsetY - this.startY;
+            this.draw(this.startX, this.startY, this.width, this.height
             )
         }
     }
@@ -48,5 +63,13 @@ export default class Rect extends Tool {
             this.ctx.fill()
             this.ctx.stroke()
         }
+    }
+
+    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, color: string) {
+        ctx.fillStyle = color
+        ctx.beginPath()
+        ctx.rect(x, y, w, h)
+        ctx.fill()
+        ctx.stroke()
     }
 }
