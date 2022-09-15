@@ -5,15 +5,18 @@ export enum MessageType {
     Draw = 'draw',
 }
 
-interface IMessageConnection {
+interface IMessageBase {
+    method: MessageType,
+    id: string
+}
+
+interface IMessageConnection extends IMessageBase {
     method: MessageType.Connection;
-    id: string;
     username: string;
 }
 
-export interface IMessageDraw {
+export interface IMessageDraw extends IMessageBase {
     method: MessageType.Draw;
-    id: string;
     tool: ITool;
 }
 

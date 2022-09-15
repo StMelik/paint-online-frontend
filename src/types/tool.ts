@@ -7,40 +7,36 @@ export enum ToolType {
     Finish = 'finish',
 }
 
-interface IBrush {
-    type: ToolType.Brush,
+interface IToolBase {
+    type: ToolType,
     x: number,
     y: number,
+}
+
+interface IBrush extends IToolBase {
+    type: ToolType.Brush,
     color: string,
 }
 
-interface IRect {
+interface IRect extends IToolBase {
     type: ToolType.Rect,
-    x: number,
-    y: number,
     width: number,
     height: number,
     color: string,
 }
 
-interface ICircle {
+interface ICircle extends IToolBase {
     type: ToolType.Circle,
-    x: number,
-    y: number,
     radius: number,
 }
 
-interface IEraser {
+interface IEraser extends IToolBase {
     type: ToolType.Eraser,
-    x: number,
-    y: number,
     color: string,
 }
 
-interface ILine {
+interface ILine extends IToolBase {
     type: ToolType.Line,
-    startX: number,
-    startY: number,
     endX: number,
     endY: number,
 }

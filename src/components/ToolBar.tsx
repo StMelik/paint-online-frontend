@@ -7,6 +7,7 @@ import Circle from '../tools/Circle';
 import Eraser from '../tools/Eraser';
 import Line from '../tools/Line';
 import Rect from '../tools/Rect';
+import { downloadFile } from '../utils/downloadFile';
 
 const ToolBar = () => {
     function changeColor(e: React.ChangeEvent<HTMLInputElement>) {
@@ -17,19 +18,12 @@ const ToolBar = () => {
 
     function download() {
         const dataUrl = canvasState.canvas.toDataURL()
-        console.log(dataUrl);
-
-        const a = document.createElement('a')
-        a.href = dataUrl
-        a.download = canvasState.sessionId + ".jpg"
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
+        const name = canvasState.sessionId + ".jpg"
+        downloadFile(dataUrl, name)
     }
 
     return (
         <div className="toolbar">
-
             <button
                 className='toolbar__button toolbar__button_brush'
                 onClick={() => toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.sessionId))}

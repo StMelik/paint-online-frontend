@@ -26,8 +26,8 @@ export default class Line extends Tool {
             method: MessageType.Draw,
             tool: {
                 type: ToolType.Line,
-                startX: this.startX,
-                startY: this.startY,
+                x: this.startX,
+                y: this.startY,
                 endX: e.offsetX,
                 endY: e.offsetY
             }
