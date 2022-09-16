@@ -3,13 +3,15 @@ export default class Tool {
     ctx: CanvasRenderingContext2D;
     socket: WebSocket;
     id: string
+    name: string
 
-    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string, name: string) {
         this.canvas = canvas
         this.socket = socket
         this.id = id
         this.ctx = canvas.getContext('2d')!
         this.destroyEvents()
+        this.name = name
     }
 
     set fillColor(color: string) {

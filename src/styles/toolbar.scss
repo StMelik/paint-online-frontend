@@ -29,6 +29,10 @@
         background-position: center;
         transition: opacity 0.3s;
 
+        &_active {
+            border: 2px dashed sandybrown;
+        }
+
         &:hover {
             opacity: 0.6;
         }

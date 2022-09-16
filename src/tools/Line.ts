@@ -9,7 +9,7 @@ export default class Line extends Tool {
     startY = 0;
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id)
+        super(canvas, socket, id, ToolType.Line)
         this.listen()
     }
 

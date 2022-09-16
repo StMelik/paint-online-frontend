@@ -6,7 +6,7 @@ export default class Brush extends Tool {
     mouseDown = false
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id)
+        super(canvas, socket, id, ToolType.Brush)
         this.listen()
     }
 

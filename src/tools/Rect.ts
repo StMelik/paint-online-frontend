@@ -11,7 +11,7 @@ export default class Rect extends Tool {
     height = 0
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id)
+        super(canvas, socket, id, ToolType.Rect)
         this.listen()
     }
 

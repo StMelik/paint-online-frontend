@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import canvasState from '../store/canvasState';
 import toolState from '../store/toolState';
@@ -7,9 +8,10 @@ import Circle from '../tools/Circle';
 import Eraser from '../tools/Eraser';
 import Line from '../tools/Line';
 import Rect from '../tools/Rect';
+import { ToolType } from '../types/tool';
 import { downloadFile } from '../utils/downloadFile';
 
-const ToolBar = () => {
+const ToolBar = observer(() => {
     function changeColor(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value
         toolState.setStrokeColor(value)
@@ -22,27 +24,54 @@ const ToolBar = () => {
         downloadFile(dataUrl, name)
     }
 
+    function getButtonClass(name: ToolType): string {
+        const cl = `toolbar__button toolbar__button_${name}`
+        return toolState.tool?.name === name ? `${cl} toolbar__button_active` : cl
+    }
+
+    function setTool(tool: ToolType): void {
+        const {canvas, socket, sessionId} = canvasState
+
+        switch(tool) {
+            case ToolType.Brush:
+                toolState.setTool(new Brush(canvas, socket, sessionId))
+                break
+            case ToolType.Rect:
+                toolState.setTool(new Rect(canvas, socket, sessionId))
+                break
+            case ToolType.Circle:
+                toolState.setTool(new Circle(canvas, socket, sessionId))
+                break
+            case ToolType.Eraser:
+                toolState.setTool(new Eraser(canvas, socket, sessionId))
+                break
+            case ToolType.Line:
+                toolState.setTool(new Line(canvas, socket, sessionId))
+                break
+        }
+    }
+
     return (
         <div className="toolbar">
             <button
-                className='toolbar__button toolbar__button_brush'
-                onClick={() => toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
+                className={getButtonClass(ToolType.Brush)}
+                onClick={() => setTool(ToolType.Brush)}
             />
             <button
-                className='toolbar__button toolbar__button_rect'
-                onClick={() => toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
+                className={getButtonClass(ToolType.Rect)}
+                onClick={() => setTool(ToolType.Rect)}
             />
             <button
-                className='toolbar__button toolbar__button_circle'
-                onClick={() => toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
+                className={getButtonClass(ToolType.Circle)}
+                onClick={() => setTool(ToolType.Circle)}
             />
             <button
-                className='toolbar__button toolbar__button_eraser'
-                onClick={() => toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
+                className={getButtonClass(ToolType.Eraser)}
+                onClick={() => setTool(ToolType.Eraser)}
             />
             <button
-                className='toolbar__button toolbar__button_line'
-                onClick={() => toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionId))}
+                className={getButtonClass(ToolType.Line)}
+                onClick={() => setTool(ToolType.Line)}
             />
             <input
                 className='toolbar__button toolbar__button_color'
@@ -63,6 +92,6 @@ const ToolBar = () => {
             />
         </div>
     );
-}
+})
 
 export default ToolBar;

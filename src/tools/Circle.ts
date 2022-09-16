@@ -10,7 +10,7 @@ export default class Circle extends Tool {
     saved = ''
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id)
+        super(canvas, socket, id, ToolType.Circle)
         this.listen()
     }
 
