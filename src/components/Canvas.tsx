@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import '../styles/canvas.scss'
 import canvasState from '../store/canvasState';
@@ -10,8 +10,10 @@ import { WS_SERVER } from '../utils/constants';
 import Api from '../utils/Api';
 import { drawImageServer } from '../utils/drawImageServer';
 import { connectionWS } from '../utils/connectionWS';
+import { CSSTransition } from 'react-transition-group';
 
 const Canvas = observer(() => {
+    const [showPopup, setShowPopup] = useState(true);
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const params = useParams()
 
@@ -52,9 +54,18 @@ const Canvas = observer(() => {
 
     return (
         <div className="canvas">
-            <Popup
-                connectHandler={connectHandler}
-            />
+            <CSSTransition
+                in={showPopup}
+                timeout={450}
+                enter={false}
+                unmountOnExit
+            >
+                <Popup
+                    onClose={() => setShowPopup(false)}
+                    show={showPopup}
+                    connectHandler={connectHandler}
+                />
+            </CSSTransition>
             <canvas
                 ref={canvasRef}
                 width={1000}

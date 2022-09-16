@@ -1,4 +1,3 @@
-@import "~bootstrap/scss/bootstrap";
 @import "./variables.scss";
 
 * {
@@ -12,4 +11,15 @@
     max-height: 100vh;
     width: 100vw;
     background-color: $background-color;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s;
+
+    &:hover {
+        opacity: 0.6;
+    }
 }

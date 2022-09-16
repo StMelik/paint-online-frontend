@@ -1,13 +1,106 @@
 @import "./variables.scss";
 
 .popup {
-    &__input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #00000080;
+    z-index: 999;
+
+    &__content {
+        background-color: $background-color;
+        width: 500px;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 100px auto 0;
+
+        &-show {
+            animation: show-popup 0.5s forwards;
+        }
+
+        &-hide {
+            animation: show-popup 0.5s reverse;
+        }
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__header-title {
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    &__header-close {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-image: url("../assets/icons/close-icon.svg");
+        width: 25px;
+        height: 25px;
+    }
+
+    &__body {
+        padding: 20px 0 25px;
+        margin: 20px 0;
+        border-top: $popup-line-height solid $popup-line-color;
+        border-bottom: $popup-line-height solid $popup-line-color;
+        position: relative;
+    }
+
+    &__body-input {
         padding: 5px 10px;
         width: 100%;
+        font-size: 18px;
     }
-    &__error {
+
+    &__body-error {
+        position: absolute;
+        left: 0;
+        bottom: 5px;
         color: red;
         margin: 0;
         font-size: 14px;
+
+        &-show {
+            animation: show-error 0.3s forwards;
+        }
+    }
+
+    &__footer {
+        text-align: right;
+    }
+
+    &__footer-button {
+        font-size: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        background-color: $popup-button-color;
+    }
+}
+
+@keyframes show-error {
+    from {
+        transform: translateY(-200%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes show-popup {
+    from {
+        transform: translateY(-200%);
+    }
+    to {
+        transform: translateY(0);
     }
 }
