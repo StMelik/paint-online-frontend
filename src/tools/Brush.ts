@@ -1,13 +1,11 @@
-import { IMessage, MessageType } from "../types/message";
-import { ToolType } from "../types/tool";
+import { CanvasColor, ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Brush extends Tool {
-    mouseDown = false
-
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id, ToolType.Brush)
+        super(canvas, socket, id)
         this.listen()
+        this.name = ToolType.Brush
     }
 
     listen() {
@@ -16,15 +14,9 @@ export default class Brush extends Tool {
         this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
     }
 
-    mouseUpHandler(e: MouseEvent) {
+    mouseUpHandler() {
         this.mouseDown = false
-        this.socket.send(JSON.stringify({
-            id: this.id,
-            method: MessageType.Draw,
-            tool: {
-                type: ToolType.Finish
-            }
-        } as IMessage))
+        this.socketSend({ type: ToolType.Finish })
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -35,20 +27,16 @@ export default class Brush extends Tool {
 
     mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
-            this.socket.send(JSON.stringify({
-                id: this.id,
-                method: MessageType.Draw,
-                tool: {
-                    type: ToolType.Brush,
-                    x: e.offsetX,
-                    y: e.offsetY,
-                    color: this.ctx.strokeStyle
-                }
-            } as IMessage))
+            this.socketSend({
+                type: ToolType.Brush,
+                color: this.ctx.strokeStyle,
+                x: e.offsetX,
+                y: e.offsetY,
+            })
         }
     }
 
-    static draw(ctx: CanvasRenderingContext2D, x: number, y: number, color: string) {
+    static draw(ctx: CanvasRenderingContext2D, x: number, y: number, color: CanvasColor) {
         ctx.strokeStyle = color
         ctx.lineTo(x, y)
         ctx.stroke()

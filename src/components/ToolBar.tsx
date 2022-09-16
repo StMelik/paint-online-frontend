@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
 import canvasState from '../store/canvasState';
 import toolState from '../store/toolState';
 import '../styles/toolbar.scss'
@@ -24,9 +23,9 @@ const ToolBar = observer(() => {
     }
 
     function setTool(tool: ToolType): void {
-        const {canvas, socket, sessionId} = canvasState
+        const { canvas, socket, sessionId } = canvasState
 
-        switch(tool) {
+        switch (tool) {
             case ToolType.Brush:
                 toolState.setTool(new Brush(canvas, socket, sessionId))
                 break

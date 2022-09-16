@@ -7,38 +7,38 @@ export enum ToolType {
     Finish = 'finish',
 }
 
+export type CanvasColor = string | CanvasGradient | CanvasPattern
+
 interface IToolBase {
-    type: ToolType,
-    x: number,
-    y: number,
+    type: ToolType;
+    color: CanvasColor;
+    x: number;
+    y: number;
 }
 
 interface IBrush extends IToolBase {
-    type: ToolType.Brush,
-    color: string,
+    type: ToolType.Brush;
 }
 
 interface IRect extends IToolBase {
-    type: ToolType.Rect,
-    width: number,
-    height: number,
-    color: string,
+    type: ToolType.Rect;
+    width: number;
+    height: number;
 }
 
 interface ICircle extends IToolBase {
-    type: ToolType.Circle,
-    radius: number,
+    type: ToolType.Circle;
+    radius: number;
 }
 
 interface IEraser extends IToolBase {
-    type: ToolType.Eraser,
-    color: string,
+    type: ToolType.Eraser;
 }
 
 interface ILine extends IToolBase {
-    type: ToolType.Line,
-    endX: number,
-    endY: number,
+    type: ToolType.Line;
+    endX: number;
+    endY: number;
 }
 
 interface IFinish {

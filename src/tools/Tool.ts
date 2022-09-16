@@ -1,24 +1,27 @@
+import { IMessage, MessageType } from '../types/message';
+import { CanvasColor, ITool } from '../types/tool';
+
 export default class Tool {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     socket: WebSocket;
     id: string
-    name: string
+    mouseDown = false
+    name = ''
 
-    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string, name: string) {
+    constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
         this.canvas = canvas
         this.socket = socket
         this.id = id
         this.ctx = canvas.getContext('2d')!
         this.destroyEvents()
-        this.name = name
     }
 
-    set fillColor(color: string) {
+    set fillColor(color: CanvasColor) {
         this.ctx.fillStyle = color
     }
 
-    set strokeColor(color: string) {
+    set strokeColor(color: CanvasColor) {
         this.ctx.strokeStyle = color
     }
 
@@ -26,9 +29,17 @@ export default class Tool {
         this.ctx.lineWidth = width
     }
 
-    destroyEvents() {
+    private destroyEvents() {
         this.canvas.onmouseup = null
         this.canvas.onmousedown = null
         this.canvas.onmousemove = null
+    }
+
+    protected socketSend(tool: ITool) {
+        this.socket.send(JSON.stringify({
+            id: this.id,
+            method: MessageType.Draw,
+            tool
+        } as IMessage))
     }
 }

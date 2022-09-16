@@ -1,17 +1,16 @@
-import { IMessage, MessageType } from "../types/message";
-import { ToolType } from "../types/tool";
+import { CanvasColor, ToolType } from "../types/tool";
+import { calcRadius } from '../utils/calcRadius';
 import Tool from "./Tool";
 
 export default class Circle extends Tool {
-    mouseDown = false
+    saved = ''
     startX = 0
     startY = 0
-    radius = 0
-    saved = ''
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id, ToolType.Circle)
+        super(canvas, socket, id)
         this.listen()
+        this.name = ToolType.Circle
     }
 
     listen() {
@@ -22,16 +21,15 @@ export default class Circle extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
-        this.socket.send(JSON.stringify({
-            id: this.id,
-            method: MessageType.Draw,
-            tool: {
-                type: ToolType.Circle,
-                x: this.startX,
-                y: this.startY,
-                radius: this.radius
-            }
-        } as IMessage))
+
+        this.socketSend({
+            type: ToolType.Circle,
+            color: this.ctx.strokeStyle,
+            x: this.startX,
+            y: this.startY,
+            radius: calcRadius(this.startX, e.offsetX, this.startY, e.offsetY)
+        })
+        this.socketSend({ type: ToolType.Finish })
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -43,10 +41,8 @@ export default class Circle extends Tool {
 
     mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
-            let radiusX = Math.abs(e.offsetX - this.startX);
-            let radiusY = Math.abs(e.offsetY - this.startY);
-            this.radius = Math.max(radiusX, radiusY)
-            this.draw(this.startX, this.startY, this.radius)
+            let radius = calcRadius(this.startX, e.offsetX, this.startY, e.offsetY)
+            this.draw(this.startX, this.startY, radius)
         }
     }
 
@@ -62,9 +58,11 @@ export default class Circle extends Tool {
         }
     }
 
-    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number) {
+    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: CanvasColor) {
         ctx.beginPath()
         ctx.arc(x, y, radius, 0, Math.PI * 2)
+        ctx.closePath()
+        ctx.strokeStyle = color
         ctx.stroke()
     }
 }

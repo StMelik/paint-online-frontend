@@ -1,16 +1,15 @@
-import { IMessage, MessageType } from "../types/message";
-import { ToolType } from "../types/tool";
+import { CanvasColor, ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Line extends Tool {
-    mouseDown = false;
     saved = '';
     startX = 0;
     startY = 0;
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id, ToolType.Line)
+        super(canvas, socket, id)
         this.listen()
+        this.name = ToolType.Line
     }
 
     listen() {
@@ -21,17 +20,15 @@ export default class Line extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
-        this.socket.send(JSON.stringify({
-            id: this.id,
-            method: MessageType.Draw,
-            tool: {
-                type: ToolType.Line,
-                x: this.startX,
-                y: this.startY,
-                endX: e.offsetX,
-                endY: e.offsetY
-            }
-        } as IMessage))
+        this.socketSend({
+            type: ToolType.Line,
+            color: this.ctx.strokeStyle,
+            x: this.startX,
+            y: this.startY,
+            endX: e.offsetX,
+            endY: e.offsetY
+        })
+        this.socketSend({ type: ToolType.Finish })
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -60,10 +57,12 @@ export default class Line extends Tool {
         }
     }
 
-    static staticDraw(ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number) {
+    static staticDraw(ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, color: CanvasColor) {
         ctx.beginPath()
         ctx.moveTo(startX, startY)
         ctx.lineTo(endX, endY)
+        ctx.strokeStyle = color
         ctx.stroke()
+        ctx.closePath()
     }
 }

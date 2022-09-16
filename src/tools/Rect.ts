@@ -1,18 +1,15 @@
-import { IMessage, MessageType } from "../types/message";
-import { ToolType } from "../types/tool";
+import { CanvasColor, ToolType } from "../types/tool";
 import Tool from "./Tool";
 
 export default class Rect extends Tool {
-    mouseDown = false
+    saved = ''
     startX = 0
     startY = 0
-    saved = ''
-    width = 0
-    height = 0
 
     constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-        super(canvas, socket, id, ToolType.Rect)
+        super(canvas, socket, id)
         this.listen()
+        this.name = ToolType.Rect
     }
 
     listen() {
@@ -23,18 +20,15 @@ export default class Rect extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.mouseDown = false
-        this.socket.send(JSON.stringify({
-            id: this.id,
-            method: MessageType.Draw,
-            tool: {
-                type: ToolType.Rect,
-                x: this.startX,
-                y: this.startY,
-                height: this.height,
-                width: this.width,
-                color: this.ctx.fillStyle
-            }
-        } as IMessage))
+        this.socketSend({
+            type: ToolType.Rect,
+            color: this.ctx.fillStyle,
+            x: this.startX,
+            y: this.startY,
+            height: e.offsetY - this.startY,
+            width: e.offsetX - this.startX,
+        })
+        this.socketSend({ type: ToolType.Finish })
     }
 
     mouseDownHandler(e: MouseEvent) {
@@ -46,9 +40,9 @@ export default class Rect extends Tool {
 
     mouseMoveHandler(e: MouseEvent) {
         if (this.mouseDown) {
-            this.width = e.offsetX - this.startX;
-            this.height = e.offsetY - this.startY;
-            this.draw(this.startX, this.startY, this.width, this.height
+            let width = e.offsetX - this.startX;
+            let height = e.offsetY - this.startY;
+            this.draw(this.startX, this.startY, width, height
             )
         }
     }
@@ -66,10 +60,11 @@ export default class Rect extends Tool {
         }
     }
 
-    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, color: string) {
-        ctx.fillStyle = color
+    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, color: CanvasColor) {
         ctx.beginPath()
         ctx.rect(x, y, w, h)
+        ctx.fillStyle = color
+        ctx.strokeStyle = color
         ctx.fill()
         ctx.stroke()
     }

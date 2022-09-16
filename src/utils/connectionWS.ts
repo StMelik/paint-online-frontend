@@ -1,5 +1,5 @@
 import { IMessage, MessageType } from "../types/message"
-import { drawFigure } from "./drawFigure"
+import { drawFigureServer } from "./drawFigureServer"
 
 type ConnectionWS = (
     socket: WebSocket,
@@ -24,10 +24,10 @@ export const connectionWS: ConnectionWS = (socket, canvas, { id, username }) => 
 
         switch (message.method) {
             case MessageType.Connection:
-                console.log(`Пользователь - ${message.username} подключился к сессии - ${message.id}`);
+                console.log(`Пользователь - ${message.username} подключился.`);
                 break
             case MessageType.Draw:
-                drawFigure(message, canvas)
+                drawFigureServer(message.tool, canvas)
                 break
         }
     }
