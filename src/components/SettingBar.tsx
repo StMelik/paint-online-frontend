@@ -2,6 +2,12 @@ import toolState from '../store/toolState';
 import '../styles/toolbar.scss'
 
 const SettingBar = () => {
+    function changeColor(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = e.target.value
+        toolState.setStrokeColor(value)
+        toolState.setFillColor(value)
+    }
+
     return (
         <div className="toolbar toolbar_settings">
             <label
@@ -19,16 +25,16 @@ const SettingBar = () => {
                 min={1}
             />
             <label
-                htmlFor="stroke-color"
+                htmlFor="line-color"
                 className='toolbar__label'
             >
-                Цвет обводки:
+                Цвет:
             </label>
             <input
-                id='stroke-color'
-                className='toolbar__input toolbar__input_stroke-color'
+                id='line-color'
+                className='toolbar__input toolbar__input_line-color'
                 type="color"
-                onChange={e => toolState.setStrokeColor(e.target.value)}
+                onChange={changeColor}
             />
         </div>
     );

@@ -33,6 +33,11 @@
             border: 2px dashed sandybrown;
         }
 
+        &:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
         &:hover {
             opacity: 0.6;
         }
@@ -63,6 +68,17 @@
         }
         &_save {
             background-image: url("../assets/icons/save-icon.svg");
+        }
+    }
+
+    &__label {
+    }
+
+    &__input {
+        &_line-width {
+            width: 50px;
+        }
+        &_line-color {
         }
     }
 }

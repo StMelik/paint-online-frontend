@@ -12,12 +12,6 @@ import { ToolType } from '../types/tool';
 import { downloadFile } from '../utils/downloadFile';
 
 const ToolBar = observer(() => {
-    function changeColor(e: React.ChangeEvent<HTMLInputElement>) {
-        const value = e.target.value
-        toolState.setStrokeColor(value)
-        toolState.setFillColor(value)
-    }
-
     function download() {
         const dataUrl = canvasState.canvas.toDataURL()
         const name = canvasState.sessionId + ".jpg"
@@ -73,18 +67,15 @@ const ToolBar = observer(() => {
                 className={getButtonClass(ToolType.Line)}
                 onClick={() => setTool(ToolType.Line)}
             />
-            <input
-                className='toolbar__button toolbar__button_color'
-                type="color"
-                onChange={changeColor}
-            />
             <button
                 className='toolbar__button toolbar__button_back'
                 onClick={() => canvasState.undo()}
+                disabled={canvasState.undoList.length === 0}
             />
             <button
                 className='toolbar__button toolbar__button_next'
                 onClick={() => canvasState.redo()}
+                disabled={canvasState.redoList.length === 0}
             />
             <button
                 className='toolbar__button toolbar__button_save'

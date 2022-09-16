@@ -36,6 +36,10 @@ class CanvasState {
         this.redoList.push(data)
     }
 
+    clearRedo() {
+        this.redoList = []
+    }
+
     undo() {
         const ctx = this.canvas.getContext('2d')!
 

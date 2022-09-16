@@ -22,22 +22,22 @@ const Canvas = observer(() => {
 
     useEffect(() => {
         const username = canvasState.username
-        if (!username) return
-
         const canvas = canvasState.canvas
         const sessionId = canvasState.sessionId
-
-        drawImageServer(canvas, sessionId)
-
         const socket = new WebSocket(WS_SERVER)
+
+        if (!username) return
+
         canvasState.setSocket(socket)
         toolState.setTool(new Brush(canvas, socket, sessionId))
 
+        drawImageServer(canvas, sessionId)
         connectionWS(socket, canvas, { id: sessionId, username })
     }, [canvasState.username])
 
     function mouseDownHandler() {
         canvasState.pushToUndo(canvasState.canvas.toDataURL())
+        canvasState.clearRedo()
     }
 
     function mouseUpHandler() {
