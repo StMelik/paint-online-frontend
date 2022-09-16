@@ -4,6 +4,8 @@ import { CanvasColor } from '../types/tool'
 
 class ToolState {
     tool: Tool | null = null
+    color: CanvasColor = '#000000'
+    lineWidth = 1
 
     constructor() {
         makeAutoObservable(this)
@@ -17,11 +19,13 @@ class ToolState {
         if (!this.tool) return
         this.tool.fillColor = color
         this.tool.strokeColor = color
+        this.color = color
     }
 
-    setLineWidth(width: number) {
+    setLineWidth(lineWidth: number) {
         if (!this.tool) return
-        this.tool.lineWidth = width
+        this.tool.lineWidth = lineWidth
+        this.lineWidth = lineWidth
     }
 }
 

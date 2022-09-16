@@ -1,17 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react'
 import toolState from '../store/toolState';
 import '../styles/toolbar.scss'
-import { ToolType } from '../types/tool';
 
 const SettingBar = observer(() => {
-    const [color, setColor] = useState('#000000')
-
-    useEffect(() => {
-        if (toolState.tool?.name === ToolType.Eraser) return
-        toolState.setColor(color)
-    }, [toolState.tool, color])
-
     return (
         <div className="toolbar toolbar_settings">
             <label
@@ -38,8 +29,7 @@ const SettingBar = observer(() => {
                 id='line-color'
                 className='toolbar__input toolbar__input_line-color'
                 type="color"
-                onChange={(e) => setColor(e.target.value)}
-                value={color}
+                onChange={(e) => toolState.setColor(e.target.value)}
             />
         </div>
     );

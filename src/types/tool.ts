@@ -12,6 +12,7 @@ export type CanvasColor = string | CanvasGradient | CanvasPattern
 interface IToolBase {
     type: ToolType;
     color: CanvasColor;
+    lineWidth: number;
     x: number;
     y: number;
 }

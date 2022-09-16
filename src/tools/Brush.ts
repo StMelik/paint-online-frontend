@@ -30,14 +30,16 @@ export default class Brush extends Tool {
             this.socketSend({
                 type: ToolType.Brush,
                 color: this.ctx.strokeStyle,
+                lineWidth: this.ctx.lineWidth,
                 x: e.offsetX,
                 y: e.offsetY,
             })
         }
     }
 
-    static draw(ctx: CanvasRenderingContext2D, x: number, y: number, color: CanvasColor) {
+    static draw(ctx: CanvasRenderingContext2D, x: number, y: number, color: CanvasColor, lineWidth: number) {
         ctx.strokeStyle = color
+        ctx.lineWidth = lineWidth
         ctx.lineTo(x, y)
         ctx.stroke()
     }

@@ -23,6 +23,7 @@ export default class Line extends Tool {
         this.socketSend({
             type: ToolType.Line,
             color: this.ctx.strokeStyle,
+            lineWidth: this.ctx.lineWidth,
             x: this.startX,
             y: this.startY,
             endX: e.offsetX,
@@ -57,11 +58,12 @@ export default class Line extends Tool {
         }
     }
 
-    static staticDraw(ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, color: CanvasColor) {
+    static staticDraw(ctx: CanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, color: CanvasColor, lineWidth: number) {
         ctx.beginPath()
         ctx.moveTo(startX, startY)
         ctx.lineTo(endX, endY)
         ctx.strokeStyle = color
+        ctx.lineWidth = lineWidth
         ctx.stroke()
         ctx.closePath()
     }

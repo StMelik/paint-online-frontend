@@ -25,6 +25,7 @@ export default class Circle extends Tool {
         this.socketSend({
             type: ToolType.Circle,
             color: this.ctx.strokeStyle,
+            lineWidth: this.ctx.lineWidth,
             x: this.startX,
             y: this.startY,
             radius: calcRadius(this.startX, e.offsetX, this.startY, e.offsetY)
@@ -58,11 +59,12 @@ export default class Circle extends Tool {
         }
     }
 
-    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: CanvasColor) {
+    static staticDraw(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: CanvasColor, lineWidth: number) {
         ctx.beginPath()
         ctx.arc(x, y, radius, 0, Math.PI * 2)
         ctx.closePath()
         ctx.strokeStyle = color
+        ctx.lineWidth = lineWidth
         ctx.stroke()
     }
 }
