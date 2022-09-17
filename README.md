@@ -27,4 +27,4 @@
 * HTML5
 
 ## Адрес проекта
-[*](*)
+[https://paint23.netlify.app/](https://paint23.netlify.app/)
